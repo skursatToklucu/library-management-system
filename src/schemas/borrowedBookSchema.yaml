@@ -1,0 +1,16 @@
+components:
+  schemas:
+    BorrowedBook:
+      type: object
+      properties:
+        userId:
+          type: integer
+          description: ID of the user who borrowed the book
+          example: 100
+        bookId:
+          type: integer
+          description: ID of the book that was borrowed
+          example: 10
+      required:
+        - userId
+        - bookId

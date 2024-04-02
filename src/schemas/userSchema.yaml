@@ -1,0 +1,11 @@
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of User
+          example: John Doe
+      required:
+        - name
