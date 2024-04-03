@@ -5,10 +5,10 @@ const router = express.Router();
 
 /**
  * @swagger
- * /borrowedBooks/{userId}/{bookId}:
+ * /borrow/{userId}/{bookId}:
  *   post:
- *     summary: Creates a new book
- *     description: Add a new book to the library.
+ *     summary: Borrow
+ *     description: User borrowing a book with his score
  *     parameters:
  *       - name: userId
  *         in: path
@@ -24,20 +24,39 @@ const router = express.Router();
  *           type: integer
  *     responses:
  *       201:
- *         description: The book was successfully created.
+ *         description: User borrowed a book succesfully
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/BorrowedBook'
+ *       409:
+ *         description: Book is currently borrowed by another user.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Book is currently borrowed by another user"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
-router.post('/borrowedBooks/:userId/:bookId', BorrowedBookController.borrowBook);
+router.post('/borrow/:userId/:bookId', BorrowedBookController.borrowBook);
 
 /**
  * @swagger
- * /borrowedBooks/{userId}/{bookId}/{score}:
+ * /return/{userId}/{bookId}/{score}:
  *   post:
- *     summary: Creates a new book
- *     description: Add a new book to the library.
+ *     summary: Return
+ *     description: User returning a book with his score
  *     parameters:
  *       - name: userId
  *         in: path
@@ -54,17 +73,36 @@ router.post('/borrowedBooks/:userId/:bookId', BorrowedBookController.borrowBook)
  *       - name: score
  *         in: path
  *         required: true
- *         description: The Scoure of the book returned
+ *         description: The Score of the book returned
  *         schema:
  *           type: integer
  *     responses:
  *       201:
- *         description: The book was successfully created.
+ *         description: User returning a book with his score
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/BorrowedBook'
+ *       400:
+ *         description: Bad request. Validation failed for the input.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Score must be between 0 and 5."
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
-router.post('/borrowedBooks/:userId/:bookId/:score', BorrowedBookController.returnBook);
+router.post('/return/:userId/:bookId/:score', BorrowedBookController.returnBook);
 
 export default router;

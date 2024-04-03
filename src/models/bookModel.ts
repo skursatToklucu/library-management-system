@@ -9,7 +9,6 @@ export class Book {
   @Column()
     name!: string;
 
-  // Kitap puanlarını tutmak için ilişki
   @OneToMany(() => BorrowedBook, borrowedBook => borrowedBook.book)
     borrowedBooks!: BorrowedBook[];
 }

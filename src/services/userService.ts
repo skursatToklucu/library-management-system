@@ -1,10 +1,10 @@
 import { AppDataSource } from "../data-source";
 import { User } from "../models/userModel";
 import { BorrowedBook } from "../models/borrowedBookModel";
+import { UserAlreadyExistsError } from "../api/errors/userAlreadyExistsError";
 
 export class UserService {
     private userRepository = AppDataSource.getRepository(User);
-    private borrowedRepository = AppDataSource.getRepository(BorrowedBook);
 
     async createUser(userData: User) {
         const existingUser = await this.userRepository.findOne({
@@ -15,7 +15,7 @@ export class UserService {
     
         // Eğer kullanıcı zaten varsa, bir hata fırlatın veya mevcut kullanıcıyı geri döndürün.
         if (existingUser) {
-            throw new Error('User already exists'); // veya return existingUser; kullanabilirsiniz.
+            throw new UserAlreadyExistsError(); // veya return existingUser; kullanabilirsiniz.
         }
     
         // Eğer kullanıcı mevcut değilse, yeni bir kullanıcı oluşturun ve kaydedin.

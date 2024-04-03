@@ -5,22 +5,22 @@ import { Book } from './bookModel';
 @Entity()
 export class BorrowedBook {
   @PrimaryGeneratedColumn()
-    id!: number;
+  id!: number;
 
   @ManyToOne(() => User, user => user.borrowedBooks)
-    user!: User;
+  user!: User;
 
   @ManyToOne(() => Book, book => book.borrowedBooks)
-    book!: Book;
+  book!: Book;
 
   @Column({ nullable: true })
   score?: number;
 
-  @Column('datetime') // 'timestamp' yerine 'datetime' kullanın
-    borrowedAt!: Date; // Doğrudan Date nesnesi
+  @Column({ type: 'datetime', nullable: true })
+  borrowedAt?: Date | null;
 
-  @Column({ type: 'datetime', nullable: true }) // Nullable olarak tanımlanabilir
-  returnedAt?: Date; // Doğrudan Date nesnesi, henüz iade edilmemişse null
+  @Column({ type: 'datetime', nullable: true })
+  returnedAt?: Date | null;
 }
 
 

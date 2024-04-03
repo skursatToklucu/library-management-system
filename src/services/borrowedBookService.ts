@@ -3,6 +3,8 @@ import { Book } from '../models/bookModel';
 import { User } from '../models/userModel';
 import { BorrowedBook } from '../models/borrowedBookModel';
 import { IsNull } from 'typeorm';
+import { BookAlreadyBorrowedException } from '../api/errors/bookAlreadyBorrowedException';
+import { BookNotFoundException } from '../api/errors/bookNotFoundException';
 
 export class BorrowedBookService {
     private bookRepository = AppDataSource.getRepository(Book);
@@ -16,10 +18,22 @@ export class BorrowedBookService {
         if (!user || !book)
             throw new Error('User or Book not found');
 
+        const borrowedBookRecord = await this.borrowRepository.findOne({
+            where: {
+                book: { id: bookId },
+                returnedAt: IsNull()
+            }
+        });
+
+        if (borrowedBookRecord)
+            throw new BookAlreadyBorrowedException();
+
+
         const borrowedBook = this.borrowRepository.create({
             user,
             book,
-            borrowedAt: new Date()
+            borrowedAt: new Date(),
+            returnedAt: null
         });
 
         await this.borrowRepository.save(borrowedBook);
@@ -36,9 +50,9 @@ export class BorrowedBookService {
         });
 
         if (!borrowedBook)
-            throw new Error('Borrowed book record not found');
+            throw new BookNotFoundException();
 
-        borrowedBook.borrowedAt = new Date(0);
+        borrowedBook.borrowedAt = null;
         borrowedBook.returnedAt = new Date();
         borrowedBook.score = score;
 

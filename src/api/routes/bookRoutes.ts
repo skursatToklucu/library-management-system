@@ -8,7 +8,7 @@ const router = Router();
  * /books:
  *   get:
  *     summary: Retrieves a list of books
- *     description: Get a list of all books in the library.
+ *     description: Getting book list
  *     responses:
  *       200:
  *         description: A list of books.
@@ -40,6 +40,25 @@ router.get('/books', BookController.getAllBook);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Book'
+ *       400:
+ *         description: Bad request. The name length must be between 3 and 30 characters.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Name length must be between 3 and 30 characters."
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
 router.post('/books', BookController.createBook);
 
@@ -48,7 +67,7 @@ router.post('/books', BookController.createBook);
  * /books/{id}:
  *   get:
  *     summary: Retrieves a single book
- *     description: Get a book by its ID from the library.
+ *     description: Getting a book with its average user score
  *     parameters:
  *       - in: path
  *         name: id
@@ -63,6 +82,25 @@ router.post('/books', BookController.createBook);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Book'
+ *       404:
+ *         description: Book not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Book not found"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
 router.get('/books/:id', BookController.getBook);
 

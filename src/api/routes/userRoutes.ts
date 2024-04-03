@@ -5,10 +5,10 @@ const router = Router();
 
 /**
  * @swagger
- * /user:
+ * /users:
  *   post:
  *     summary: Creates a new user
- *     description: Add a user to the library.
+ *     description: Add a new user to the library.
  *     requestBody:
  *       required: true
  *       content:
@@ -22,6 +22,16 @@ const router = Router();
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Bad request. Validation failed for the input.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Name length must be between 3 and 30 characters."
  *       500:
  *         description: Internal Server Error
  *         content:
@@ -32,16 +42,17 @@ const router = Router();
  *                 message:
  *                   type: string
  */
-router.post('/user', UserController.createUser);
+router.post('/users', UserController.createUser);
+
 
 
 
 /**
  * @swagger
- * /user:
+ * /users:
  *   get:
  *     summary: Retrieves a list of users
- *     description: Get a list of all users in the library.
+ *     description: Getting user list with ids and names.
  *     responses:
  *       200:
  *         description: A list of users.
@@ -51,16 +62,25 @@ router.post('/user', UserController.createUser);
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/User'
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
-router.get('/user', UserController.allUsers);
+router.get('/users', UserController.allUsers);
 
 
 /**
  * @swagger
  * /user/{id}:
  *   get:
- *     summary: Retrieves a list of users
- *     description: Get a list of all users in the library.
+ *     summary: Getting a user
+ *     description: Getting a user with his past and current book borrow list
  *     parameters:
  *       - in: path
  *         name: id
@@ -77,6 +97,25 @@ router.get('/user', UserController.allUsers);
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/User'
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "User not found"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
 router.get('/user/:id', UserController.getUser);
 
