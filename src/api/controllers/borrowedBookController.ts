@@ -12,7 +12,6 @@ export class BorrowedBookController {
             const result = await this.borrowedBookService.borrowBook(userId, bookId);
             res.status(200).send(result);
         } catch (error: any) {
-            // Hata mesajını kontrol ederek uygun HTTP durum kodu ayarlayın
             if (error.message === 'User not found' || error.message === 'Book not found') {
                 res.status(404).send({ message: error.message });
             } else if (error.message === 'Book is currently borrowed') {

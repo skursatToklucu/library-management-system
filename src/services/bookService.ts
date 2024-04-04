@@ -17,22 +17,18 @@ export class BookService {
           relations: ['borrowedBooks'],
         });
       
-        // Kitap bulunamazsa hata fırlat
         if (!book) {
           throw new BookNotFoundException();
         }
       
-        // İlgili kitaba ait ödünç kayıtlarından puanları çıkar
         const scores = book.borrowedBooks
           .filter(borrowedBook => borrowedBook.score != null)
           .map(borrowedBook => borrowedBook.score as number);
       
-        // Puanların ortalamasını hesapla
         const averageScore = scores.length
           ? scores.reduce((acc, cur) => acc + cur, 0) / scores.length
-          : null; // Eğer puan yoksa, ortalama null olabilir
+          : null; 
       
-        // Sonucu JSON olarak döndür
         return {
           name: book.name,
           averageScore: averageScore,

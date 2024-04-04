@@ -30,7 +30,7 @@ export class UserService {
     async getUser(id: number) {
         const user = await this.userRepository.findOne({
             where: { id },
-            relations: ['borrowedBooks', 'borrowedBooks.book'] // ilişkili borrowedBooks ve kitapları dahil edin
+            relations: ['borrowedBooks', 'borrowedBooks.book'] 
         });
     
         if (!user) {
@@ -38,15 +38,15 @@ export class UserService {
         }
     
         const pastBorrowedBooks: {
-            name: string; userScore: number | undefined; // score null ise bu alan dönüşte olmayacak
+            name: string; userScore: number | undefined; 
         }[] = [];
         const presentBorrowedBooks: { name: string; }[] = [];
     
-        // Şu an ödünç alınan kitapları ve geçmişte ödünç alınan kitapları ayrıştır
+
         user.borrowedBooks.forEach(borrowedBook => {
             const bookInfo = {
                 name: borrowedBook.book.name,
-                userScore: borrowedBook.score // score null ise bu alan dönüşte olmayacak
+                userScore: borrowedBook.score 
             };
     
             if (borrowedBook.returnedAt) {
@@ -55,8 +55,7 @@ export class UserService {
                 presentBorrowedBooks.push({ name: borrowedBook.book.name });
             }
         });
-    
-        // Yeni JSON yapısını oluştur
+
         const userBorrowedBooksInfo = {
             id: user.id,
             name: user.name,
